@@ -1,0 +1,29 @@
+name: FCC BCC dual-phase HEA
+random_seed: 7
+box:
+  lengths: [42.0, 42.0, 42.0]
+  periodic: [true, true, true]
+phases:
+  - name: FCC
+    structure: fcc
+    lattice_parameter: 3.59
+    fraction: 0.67
+    composition: {Co: 0.25, Cr: 0.10, Fe: 0.20, Ni: 0.45}
+  - name: BCC
+    structure: bcc
+    lattice_parameter: 2.88
+    fraction: 0.33
+    composition: {Co: 0.05, Cr: 0.35, Fe: 0.35, Ni: 0.25}
+grains:
+  number: 6
+  method: voronoi
+  orientations: random
+chemistry:
+  method: random
+cleanup:
+  minimum_distance_factor: 0.64
+  maximum_deleted_fraction: 0.10
+  boundary_width: 3.5
+output:
+  formats: [extxyz, lammps-data, vasp]
+

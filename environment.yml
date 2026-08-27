@@ -1,0 +1,16 @@
+name: alloymodelforge-dev
+channels:
+  - https://conda.ovito.org
+  - conda-forge
+  - nodefaults
+dependencies:
+  - python=3.13
+  - pip
+  - icet=3.0
+  - ovito=3.16.0
+  - matplotlib
+  - pip:
+      # SciPy 1.18.0 changes scipy.spatial Rotation output for the fixed
+      # polycrystal seed and therefore breaks the documented structure hash.
+      - scipy==1.18.1
+      - -e .[web,sqs,test]

@@ -1,0 +1,22 @@
+name: Commensurate HCP Ti single crystal
+random_seed: 42
+box:
+  lengths: [8.85, 15.32864965, 14.45205]
+  periodic: [true, true, true]
+phases:
+  - name: HCP
+    structure: hcp
+    lattice_parameter: 2.95
+    c_over_a: 1.633
+    fraction: 1.0
+    composition: {Ti: 1.0}
+grains:
+  number: 1
+  orientations: identity
+chemistry:
+  method: random
+analysis:
+  ovito_enabled: true
+  methods: [cna, ptm]
+output:
+  formats: [extxyz, lammps-data, vasp, cif]

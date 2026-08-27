@@ -1,0 +1,49 @@
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[project]
+name = "alloy-model-forge"
+version = "0.2.0"
+description = "High-throughput construction and validation of atomistic alloy models for downstream MD and DFT"
+readme = "README.md"
+requires-python = ">=3.11"
+license = {file = "LICENSE"}
+keywords = ["alloys", "polycrystals", "SQS", "atomistic modelling"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Topic :: Scientific/Engineering :: Chemistry",
+  "Topic :: Scientific/Engineering :: Physics",
+]
+dependencies = [
+  "ase>=3.23",
+  "numpy>=1.26",
+  "scipy>=1.12",
+  "pydantic>=2.7",
+  "PyYAML>=6.0",
+  "typer>=0.12",
+]
+
+[project.optional-dependencies]
+web = ["fastapi>=0.115", "uvicorn[standard]>=0.30", "websockets>=13"]
+sqs = ["sqsgenerator>=0.5"]
+icet = ["icet>=3.0,<3.3"]
+analysis = ["ovito>=3.12"]
+test = ["pytest>=8.0", "httpx>=0.27"]
+full = ["fastapi>=0.115", "uvicorn[standard]>=0.30", "websockets>=13", "sqsgenerator>=0.5", "ovito>=3.12"]
+
+[project.scripts]
+alloyforge = "alloyforge.cli:app"
+alloyforge-web = "alloyforge_web.app:main"
+alloy-model-forge = "alloyforge.cli:app"
+alloy-model-forge-web = "alloyforge_web.app:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/alloyforge", "src/alloymodelforge", "src/alloyforge_web"]
+artifacts = ["src/alloyforge_web/static/*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

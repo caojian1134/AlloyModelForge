@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "If you use AlloyModelForge in published work, please cite this software."
+title: "AlloyModelForge: high-throughput construction and validation of atomistic alloy models for downstream MD and DFT"
+type: software
+authors:
+  - family-names: "Contributors"
+    given-names: "AlloyModelForge"
+version: 0.2.0
+date-released: 2026-08-27
+license: MIT
+keywords:
+  - alloys
+  - polycrystals
+  - special quasirandom structures
+  - atomistic modelling
+  - molecular dynamics
+  - density functional theory
+  - high-throughput modelling

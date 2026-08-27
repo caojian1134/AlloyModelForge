@@ -1,0 +1,38 @@
+schema_version: 1
+dataset_name: AlloyModelForge journal golden benchmark
+cases:
+  single_fcc:
+    source: inline_reference_fcc
+    purpose: analytic FCC atom count, spacing, CNA and PTM
+  rectangular_fcc:
+    source: examples/fcc_rectangular_cell.yaml
+    purpose: standard non-cubic periodic cell and analytic atom count
+  fcc_polycrystal:
+    source: examples/fcc_polycrystal.yaml
+    purpose: grain geometry, boundaries and misorientation
+  fcc_bcc_dual_phase:
+    source: examples/fcc_bcc_dual_phase.yaml
+    purpose: multiphase population and interface validity
+  spherical_precipitate:
+    source: examples/fcc_bcc_spherical_precipitate.yaml
+    purpose: embedded second-phase geometry
+  core_shell_particle:
+    source: examples/fcc_bcc_hcp_core_shell.yaml
+    purpose: nested radial phase ordering and connectivity
+  directional_core_shell_sqs:
+    source: examples/fcc_bcc_hcp_core_shell_directional_sqs.yaml
+    purpose: core-to-shell directional SRO and finite angular-triplet optimization
+  region_constrained_sqs:
+    source: examples/fcc_polycrystal_region_sqs.yaml
+    purpose: constrained chemistry and SRO improvement
+performance:
+  lattice: fcc
+  element: Ni
+  lattice_parameter: 3.6
+  repeats: [4, 8, 14, 22, 30]
+  random_seed: 701
+acceptance:
+  all_scientific_checks_pass: true
+  all_ovito_renders_exist: true
+  deterministic_hashes_match_repeat: true
+  performance_fit_min_r_squared: 0.90

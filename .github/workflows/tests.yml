@@ -1,0 +1,34 @@
+name: conda-tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  full:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: conda-incubator/setup-miniconda@v3
+        with:
+          activate-environment: alloymodelforge-dev
+          environment-file: environment.yml
+          auto-activate-base: false
+          channel-priority: strict
+      - shell: bash -el {0}
+        run: python -m pip check
+      - shell: bash -el {0}
+        run: python -m pytest -q
+      - shell: bash -el {0}
+        run: python scripts/scientific_validation.py --output scientific-validation-conda.json
+      - shell: bash -el {0}
+        run: python scripts/journal_validation.py --output journal-validation
+      - uses: actions/upload-artifact@v4
+        with:
+          name: scientific-validation-${{ matrix.os }}
+          path: |
+            scientific-validation-conda.json
+            journal-validation/

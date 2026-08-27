@@ -1,0 +1,51 @@
+name: CoNi polycrystal with constrained grain-boundary disorder
+random_seed: 17
+box:
+  lengths: [25.2, 25.2, 25.2]
+  periodic: [true, true, true]
+phases:
+  - name: FCC
+    structure: fcc
+    lattice_parameter: 3.6
+    fraction: 1.0
+    composition: {Co: 0.5, Ni: 0.5}
+grains:
+  number: 4
+  method: voronoi
+  orientations: random
+chemistry:
+  method: native_sqs
+  neighbor_shells: 2
+  steps: 12000
+  restarts: 4
+  adaptive_temperature: true
+  target_acceptance_rate: 0.35
+  early_stop_patience: 3000
+  exclude_boundaries: false
+  region_constraints:
+    - name: Ni-rich-grain-boundary
+      phase: FCC
+      region: grain_boundary
+      target_composition: {Co: 0.25, Ni: 0.75}
+      composition_weight: 30.0
+      pair_weight: 1.0
+      # Include bonds crossing from the boundary layer into its surroundings.
+      pair_scope: touching
+    - name: bulk-randomness
+      phase: FCC
+      region: interior
+      # Compensates the Ni-rich boundary while preserving global Co:Ni = 1:1.
+      target_composition: {Co: 0.70, Ni: 0.30}
+      composition_weight: 30.0
+      pair_weight: 2.0
+      pair_scope: internal
+cleanup:
+  boundary_width: 3.2
+  maximum_deleted_fraction: 0.25
+  maximum_boundary_fraction: 0.8
+analysis:
+  ovito_enabled: true
+  methods: [cna, ptm]
+  rdf_enabled: true
+output:
+  formats: [extxyz, lammps-data, vasp, cif]

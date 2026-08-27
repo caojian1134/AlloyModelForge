@@ -1,0 +1,10 @@
+.topbar-actions { display: flex; align-items: center; gap: 16px; }
+.language-toggle { border: 1px solid rgba(255,255,255,.6); background: rgba(255,255,255,.1); color: #fff; border-radius: 999px; padding: 7px 14px; font-weight: 800; cursor: pointer; }
+.language-toggle:hover { background: #fff; color: #10251f; }
+.project-tools { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 14px; }
+.project-tools select { width: auto; min-width: 190px; margin: 0; padding: 9px; }
+.advanced-editor { margin-top: 18px; border: 1px solid #deddd5; border-radius: 10px; padding: 12px; background: #f8faf7; }
+.advanced-editor summary { cursor: pointer; font-weight: 750; }
+.advanced-editor p { color: #6d7b76; font-size: 13px; }
+.advanced-actions { display: flex; gap: 8px; margin: 10px 0; }
+.advanced-editor textarea { width: 100%; min-height: 320px; resize: vertical; font: 12px/1.5 Consolas, monospace; border: 1px solid #cbd3cc; border-radius: 8px; padding: 12px; background: #fff; }

@@ -1,0 +1,69 @@
+name: Directional-SRO alloyed FCC/BCC/HCP core-shell model
+random_seed: 43
+box:
+  lengths: [28.8, 28.8, 28.8]
+  periodic: [true, true, true]
+phases:
+  - name: FCC matrix
+    structure: fcc
+    lattice_parameter: 3.6
+    fraction: 0.93
+    composition: {Co: 0.5, Ni: 0.5}
+  - name: BCC shell
+    structure: bcc
+    lattice_parameter: 2.9
+    fraction: 0.055
+    composition: {Cr: 0.5, Fe: 0.5}
+  - name: HCP core
+    structure: hcp
+    lattice_parameter: 2.95
+    c_over_a: 1.633
+    fraction: 0.015
+    composition: {Al: 0.5, Ti: 0.5}
+grains:
+  number: 1
+  orientations: identity
+inclusions:
+  - name: outer BCC particle
+    phase: BCC shell
+    shape: sphere
+    center: [0.5, 0.5, 0.5]
+    size: [7.5, 7.5, 7.5]
+  - name: inner HCP core
+    phase: HCP core
+    shape: sphere
+    center: [0.5, 0.5, 0.5]
+    size: [4.0, 4.0, 4.0]
+chemistry:
+  method: native_sqs
+  neighbor_shells: 2
+  steps: 3000
+  restarts: 2
+  exclude_boundaries: false
+  directional_sro_constraints:
+    - name: core-to-shell-contact
+      source: {phase: HCP core, region: all}
+      target: {phase: BCC shell, region: all}
+      shell: 1
+      # Negative alpha favors the specified unlike contacts relative to the
+      # target-region composition. The reverse direction is a separate target.
+      target_sro: {Ti->Cr: -0.30, Al->Fe: -0.30}
+      weight: 5.0
+  triplet_constraints:
+    - name: matrix-angular-randomness
+      selector: {phase: FCC matrix, region: interior}
+      shell: 1
+      angle_bins: [60, 90, 120, 180]
+      weight: 0.2
+cleanup:
+  minimum_distance_factor: 0.60
+  maximum_deleted_fraction: 0.30
+  boundary_width: 3.2
+  maximum_phase_fraction_deviation: 0.05
+  maximum_boundary_fraction: 0.80
+analysis:
+  ovito_enabled: true
+  methods: [cna, ptm]
+  rdf_enabled: true
+output:
+  formats: [extxyz, lammps-data, vasp, cif]

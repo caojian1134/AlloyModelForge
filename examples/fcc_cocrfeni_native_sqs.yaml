@@ -1,0 +1,28 @@
+name: CoCrFeNi FCC native SQS
+random_seed: 19
+box:
+  lengths: [14.36, 14.36, 14.36]
+  periodic: [true, true, true]
+phases:
+  - name: FCC
+    structure: fcc
+    lattice_parameter: 3.59
+    fraction: 1.0
+    composition: {Co: 0.25, Cr: 0.25, Fe: 0.25, Ni: 0.25}
+grains:
+  number: 1
+  orientations: identity
+chemistry:
+  method: native_sqs
+  neighbor_shells: 2
+  steps: 10000
+  exclude_boundaries: false
+  random_temperature: 0.02
+analysis:
+  ovito_enabled: true
+  methods: [cna, ptm]
+cleanup:
+  maximum_phase_fraction_deviation: 0.01
+  maximum_boundary_fraction: 0.05
+output:
+  formats: [extxyz, lammps-data, vasp, cif]

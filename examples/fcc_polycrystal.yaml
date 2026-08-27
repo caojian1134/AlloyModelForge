@@ -1,0 +1,28 @@
+name: CoCrFeMnNi FCC polycrystal
+random_seed: 42
+box:
+  lengths: [36.0, 36.0, 36.0]
+  periodic: [true, true, true]
+phases:
+  - name: FCC
+    structure: fcc
+    lattice_parameter: 3.59
+    fraction: 1.0
+    composition:
+      Co: 0.2
+      Cr: 0.2
+      Fe: 0.2
+      Mn: 0.2
+      Ni: 0.2
+grains:
+  number: 4
+  method: voronoi
+  orientations: random
+chemistry:
+  method: random
+cleanup:
+  minimum_distance_factor: 0.68
+  maximum_deleted_fraction: 0.15
+  boundary_width: 3.5
+output:
+  formats: [extxyz, lammps-data]

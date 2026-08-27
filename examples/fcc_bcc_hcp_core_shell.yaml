@@ -1,0 +1,50 @@
+name: FCC matrix with BCC-shell HCP-core particle
+random_seed: 31
+box:
+  lengths: [28.8, 28.8, 28.8]
+  periodic: [true, true, true]
+phases:
+  - name: FCC matrix
+    structure: fcc
+    lattice_parameter: 3.6
+    fraction: 0.93
+    composition: {Ni: 1.0}
+  - name: BCC shell
+    structure: bcc
+    lattice_parameter: 2.9
+    fraction: 0.055
+    composition: {Fe: 1.0}
+  - name: HCP core
+    structure: hcp
+    lattice_parameter: 2.95
+    c_over_a: 1.633
+    fraction: 0.015
+    composition: {Ti: 1.0}
+grains:
+  number: 1
+  orientations: identity
+inclusions:
+  # Nested inclusions are applied in list order: build the outer particle first,
+  # then replace its center with the smaller core.
+  - name: outer BCC particle
+    phase: BCC shell
+    shape: sphere
+    center: [0.5, 0.5, 0.5]
+    size: [7.5, 7.5, 7.5]
+  - name: inner HCP core
+    phase: HCP core
+    shape: sphere
+    center: [0.5, 0.5, 0.5]
+    size: [4.0, 4.0, 4.0]
+cleanup:
+  minimum_distance_factor: 0.60
+  maximum_deleted_fraction: 0.30
+  boundary_width: 3.2
+  maximum_phase_fraction_deviation: 0.05
+  maximum_boundary_fraction: 0.80
+analysis:
+  ovito_enabled: true
+  methods: [cna, ptm]
+  rdf_enabled: true
+output:
+  formats: [extxyz, lammps-data, vasp, cif]

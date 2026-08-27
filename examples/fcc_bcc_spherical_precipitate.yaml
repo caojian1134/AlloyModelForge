@@ -1,0 +1,40 @@
+name: FCC matrix with spherical BCC precipitate
+random_seed: 21
+box:
+  lengths: [21.6, 21.6, 21.6]
+  periodic: [true, true, true]
+phases:
+  - name: FCC matrix
+    structure: fcc
+    lattice_parameter: 3.6
+    fraction: 0.90
+    composition: {Ni: 0.5, Co: 0.5}
+  - name: BCC precipitate
+    structure: bcc
+    lattice_parameter: 2.9
+    fraction: 0.10
+    composition: {Fe: 0.7, Cr: 0.3}
+grains:
+  number: 1
+  orientations: identity
+inclusions:
+  - name: central precipitate
+    phase: BCC precipitate
+    shape: sphere
+    center: [0.5, 0.5, 0.5]
+    # Radius chosen to make the explicit sphere occupy approximately 10% of this box.
+    size: [6.4, 6.4, 6.4]
+    fractional_center: true
+    periodic: true
+chemistry:
+  method: random
+analysis:
+  ovito_enabled: true
+  methods: [cna, ptm]
+  rdf_enabled: true
+cleanup:
+  minimum_distance_factor: 0.60
+  maximum_deleted_fraction: 0.30
+  boundary_width: 3.5
+output:
+  formats: [extxyz, lammps-data, vasp, cif]

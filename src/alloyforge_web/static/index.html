@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="AlloyModelForge：面向 MD、DFT 与高通量工作流的合金原子计算模型构建与验证平台">
+  <title>AlloyModelForge · 合金模型工坊</title>
+  <link rel="stylesheet" href="/styles.css?v=20260826-1">
+  <link rel="stylesheet" href="/web-overrides.css?v=20260826-1">
+  <style>#viewer{position:relative}</style>
+  <script src="/3Dmol-min.js?v=20260824-2"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span class="brandmark">AMF</span><div><strong>AlloyModelForge</strong><small>高通量合金原子模型构建平台</small></div></div>
+    <div class="topbar-actions"><div class="status"><span class="status-dot"></span>本地计算服务</div><button id="languageToggle" class="language-toggle" type="button" aria-label="Switch language">EN</button></div>
+  </header>
+
+  <main class="shell">
+    <aside class="sidebar">
+      <div class="intro"><span class="eyebrow">BUILD WORKSPACE</span><h1>从微结构设想到<br>可计算原子模型</h1><p>设置晶粒、相与化学组成，系统会在本机生成可用于 LAMMPS 的模型。</p></div>
+      <nav id="steps" class="steps">
+        <button data-step="1" class="active"><b>01</b><span>模型类型<small>选择结构框架</small></span></button>
+        <button data-step="2"><b>02</b><span>尺寸与晶粒<small>定义空间尺度</small></span></button>
+        <button data-step="3"><b>03</b><span>相与成分<small>配置合金体系</small></span></button>
+        <button data-step="4"><b>04</b><span>构建选项<small>化学与输出</small></span></button>
+        <button data-step="5"><b>05</b><span>生成与查看<small>验证并下载</small></span></button>
+      </nav>
+      <div class="estimate-card"><span>规模估算</span><strong id="estimateAtoms">—</strong><small>预计原子数</small><div><span id="estimateMemory">— MB</span><span id="estimateGrain">— Å</span></div></div>
+    </aside>
+
+    <section class="workspace">
+      <div id="notice" class="notice hidden"></div>
+      <div class="project-tools"><input id="projectFile" type="file" accept=".yaml,.yml,.json" hidden><select id="presetSelector" aria-label="结构模板"><option value="">选择新手模板…</option></select><button id="loadPresetButton" class="secondary" type="button">载入模板</button><button id="importProjectButton" class="secondary" type="button">导入工程配置</button><button id="exportProjectButton" class="secondary" type="button">导出当前配置</button><span id="projectName"></span></div>
+
+      <section class="panel active" data-panel="1">
+        <div class="panel-head"><div><span class="eyebrow">STEP 01</span><h2>你希望构建哪类模型？</h2></div><span class="hint">后续参数会根据选择自动调整</span></div>
+        <div class="choice-grid">
+          <label class="model-choice selected"><input type="radio" name="modelType" value="single-poly" checked><span class="choice-icon">◈</span><strong>单相多晶</strong><small>同一晶体结构、多个随机取向晶粒</small><i>推荐入门</i></label>
+          <label class="model-choice"><input type="radio" name="modelType" value="dual-poly"><span class="choice-icon">◫</span><strong>FCC / BCC 双相多晶</strong><small>按晶粒分配两种相和独立组成</small><i>高熵合金</i></label>
+          <label class="model-choice"><input type="radio" name="modelType" value="single-crystal"><span class="choice-icon">◇</span><strong>单晶</strong><small>一个晶粒，用于基础模型与结构检查</small><i>快速</i></label>
+        </div>
+      </section>
+
+      <section class="panel" data-panel="2">
+        <div class="panel-head"><div><span class="eyebrow">STEP 02</span><h2>计算盒与晶粒</h2></div><span class="hint">长度单位 Å</span></div>
+        <div class="form-card">
+          <h3>计算盒</h3><div class="row three"><label>X 长度<input id="boxX" type="number" value="45" min="10"></label><label>Y 长度<input id="boxY" type="number" value="45" min="10"></label><label>Z 长度<input id="boxZ" type="number" value="45" min="10"></label></div>
+          <div class="checks"><label><input id="pbcX" type="checkbox" checked> X 周期</label><label><input id="pbcY" type="checkbox" checked> Y 周期</label><label><input id="pbcZ" type="checkbox" checked> Z 周期</label></div>
+          <div class="rule"></div>
+          <h3>晶粒设置</h3><div class="row two"><label>晶粒数量<input id="grainCount" type="number" value="6" min="1" max="100"></label><label>取向<select id="orientations"><option value="random">均匀随机取向</option><option value="identity">相同取向（调试）</option><option value="explicit">工程文件中的显式取向</option></select></label></div>
+          <label class="seed-row">随机种子<input id="randomSeed" type="number" value="42"><small>相同种子可复现模型</small></label>
+        </div>
+      </section>
+
+      <section class="panel" data-panel="3">
+        <div class="panel-head"><div><span class="eyebrow">STEP 03</span><h2>相结构与元素组成</h2></div><span class="hint">每相组成需合计 100%</span></div>
+        <div id="phaseEditor"></div>
+        <button id="addPhaseButton" class="secondary" type="button">＋ 添加一个相</button>
+        <div class="rule"></div><h3>晶粒内析出相空间区域</h3>
+        <div id="inclusionEditor"></div>
+        <button id="addInclusionButton" class="secondary" type="button">＋ 添加析出相区域</button>
+      </section>
+
+      <section class="panel" data-panel="4">
+        <div class="panel-head"><div><span class="eyebrow">STEP 04</span><h2>化学占位与输出</h2></div></div>
+        <div class="form-card">
+          <h3>化学构型</h3>
+          <div class="method-list">
+            <label class="method selected"><input type="radio" name="chemistry" value="random" checked><span><strong>精确组成随机占位</strong><small>快速、稳定，适合大型多晶分子动力学模型</small></span></label>
+            <label class="method"><input type="radio" name="chemistry" value="native_sqs"><span><strong>AlloyModelForge SQS（推荐）</strong><small>无需外部程序；按真实邻居壳层降低随机合金短程有序偏差</small></span></label>
+            <label class="method"><input type="radio" name="chemistry" value="icet"><span><strong>icet SQS 后端</strong><small>需要可选 SQS 依赖；规则晶格优先</small></span></label>
+            <label class="method"><input type="radio" name="chemistry" value="sqsgenerator"><span><strong>sqsgenerator 后端</strong><small>多组元及短程有序优化入口</small></span></label>
+          </div>
+          <div class="row three"><label>邻居壳层<input id="sqsShells" type="number" value="2" min="1" max="5"></label><label>优化步数<input id="sqsSteps" type="number" value="10000" min="100"></label><label>独立启动次数<input id="sqsRestarts" type="number" value="1" min="1" max="64"></label></div>
+          <div class="row three"><label>目标接受率<input id="targetAcceptance" type="number" value="0.35" min="0.06" max="0.94" step="0.01"></label><label>无改进停止步数<input id="earlyPatience" type="number" value="" min="100" placeholder="留空则禁用"></label><label>PTM RMSD 阈值<input id="ptmCutoff" type="number" value="0.15" min="0.01" step="0.01"></label></div>
+          <div class="checks"><label><input id="excludeBoundaries" type="checkbox" checked> SQS 目标排除晶界/相界</label><label><input id="adaptiveTemperature" type="checkbox" checked> 自适应退火温度</label><label><input id="exactComposition" type="checkbox"> 要求区域组成严格可行</label><label><input id="enableCna" type="checkbox" checked> OVITO CNA</label><label><input id="enablePtm" type="checkbox" checked> OVITO PTM</label><label><input id="enableRdf" type="checkbox" checked> 径向分布函数 RDF</label></div>
+          <div class="rule"></div><h3>几何清理与分析</h3>
+          <div class="row three"><label>晶界宽度 Å<input id="boundaryWidth" type="number" value="3.5" min="0.1" step="0.1"></label><label>最小距离因子<input id="minimumDistance" type="number" value="0.68" min="0.31" max="0.99" step="0.01"></label><label>最大删除比例<input id="maximumDeleted" type="number" value="0.15" min="0" max="0.5" step="0.01"></label></div>
+          <div class="rule"></div><h3>输出文件</h3>
+          <div id="outputFormats" class="checks"><label><input type="checkbox" value="extxyz" checked disabled> Extended XYZ（预览必需）</label><label><input type="checkbox" value="lammps-data" checked> LAMMPS data</label><label><input type="checkbox" value="vasp"> POSCAR</label><label><input type="checkbox" value="cif"> CIF</label></div>
+          <details class="advanced-editor"><summary>完整高级配置（区域 SQS、方向性 SRO、三体、缺陷等）</summary><p>载入当前表单后可直接编辑完整 YAML；“应用 YAML”会验证并回填向导，未显示的高级字段仍会保留。</p><div class="advanced-actions"><button id="syncYamlButton" class="secondary" type="button">从表单生成 YAML</button><button id="applyYamlButton" class="secondary" type="button">验证并应用 YAML</button></div><textarea id="advancedYaml" spellcheck="false" aria-label="完整 YAML 配置"></textarea></details>
+        </div>
+      </section>
+
+      <section class="panel result-panel" data-panel="5">
+        <div class="panel-head"><div><span class="eyebrow">STEP 05</span><h2>生成、验证与查看</h2></div><button id="buildButton" class="primary">开始构建模型</button></div>
+        <div id="idleState" class="idle-state"><span>◎</span><h3>模型已经准备就绪</h3><p>点击“开始构建模型”，计算将在本机独立进程中执行。</p></div>
+        <div id="buildState" class="hidden">
+          <div class="progress-card"><div class="progress-top"><div><strong id="progressStage">准备任务</strong><small id="progressMessage">正在提交配置</small></div><b id="progressValue">0%</b></div><div class="progress-track"><i id="progressBar"></i></div><button id="cancelButton" class="text-button">取消任务</button></div>
+          <div class="result-grid"><div class="viewer-card"><div class="viewer-toolbar"><strong>三维原子模型</strong><div><select id="colorMode"><option value="element">按元素着色</option><option value="grain">按晶粒着色</option><option value="phase">按相着色</option><option value="inclusion">按析出相区域着色</option><option value="region">按界面着色</option><option value="cna">按 CNA 结构着色</option><option value="ptm">按 PTM 结构着色</option></select><select id="filterMode"><option value="all">显示全部</option><option value="interior">仅晶内</option><option value="boundary">所有界面</option><option value="grain-boundary">仅晶界</option><option value="phase-boundary">仅相界</option><option value="triple-junction">仅三叉区</option><option value="half-x">X中心剖切</option><option value="half-y">Y中心剖切</option><option value="half-z">Z中心剖切</option></select></div></div><div id="viewer"><div class="viewer-placeholder">构建完成后显示模型</div></div><small id="viewerStats"></small></div>
+            <div class="summary-card"><strong>模型验证</strong><div id="validationSummary" class="metrics"></div><div class="downloads"><strong>SQS / CNA / PTM 报告</strong><div id="analysisSummary"></div></div><div class="downloads"><strong>结果文件</strong><div id="fileList"></div></div></div></div>
+        </div>
+      </section>
+
+      <footer class="actions"><button id="previousButton" class="secondary" disabled>上一步</button><span id="stepLabel">1 / 5</span><button id="nextButton" class="primary">下一步</button></footer>
+    </section>
+  </main>
+  <div id="elementModal" class="element-modal hidden" role="dialog" aria-modal="true" aria-labelledby="elementTitle">
+    <div class="element-dialog">
+      <div class="element-dialog-head"><div><span class="eyebrow">ELEMENT SELECTOR</span><h2 id="elementTitle">选择合金元素</h2></div><button id="closeElementModal" class="icon-button" type="button" aria-label="关闭">×</button></div>
+      <div class="element-search"><input id="elementSearch" autocomplete="off" placeholder="搜索元素符号或名称，例如 Fe、铁、Iron"><button id="addTypedElement" class="primary" type="button">添加输入元素</button></div>
+      <div class="element-legend"><span class="alkali">碱金属</span><span class="transition">过渡金属</span><span class="post">主族金属</span><span class="metalloid">类金属</span><span class="nonmetal">非金属</span><span class="lanthanide">镧系/锕系</span></div>
+      <div id="periodicTable" class="periodic-table"></div>
+      <small class="element-help">点击元素即可加入当前相；也可以在搜索框直接输入合法元素符号。</small>
+    </div>
+  </div>
+  <script src="/app.js?v=20260826-1"></script>
+</body>
+</html>
