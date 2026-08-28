@@ -5,8 +5,10 @@ type: software
 authors:
   - family-names: "Contributors"
     given-names: "AlloyModelForge"
-version: 0.2.0
-date-released: 2026-08-27
+version: "1.0"
+date-released: 2026-08-28
+repository-code: "https://github.com/caojian1134/AlloyModelForge"
+url: "https://github.com/caojian1134/AlloyModelForge"
 license: MIT
 keywords:
   - alloys

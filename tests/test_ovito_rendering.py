@@ -46,6 +46,7 @@ def test_all_filters_are_defined_and_bounded(annotated_model, mode):
         assert np.all(selected.positions[:, 0] <= atoms.cell.lengths()[0] / 2)
 
 
+@pytest.mark.ovito_render
 def test_real_ovito_tachyon_render_of_rectangular_section(annotated_model, tmp_path):
     pytest.importorskip("ovito")
     model, atoms = annotated_model

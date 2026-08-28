@@ -7,6 +7,8 @@ import platform
 import numpy as np
 from ase import Atoms
 
+from ._version import __version__
+
 
 def package_version(name: str) -> str | None:
     try:
@@ -42,13 +44,13 @@ def runtime_provenance() -> dict:
         "alloy_model_forge_version": (
             package_version("alloy-model-forge")
             or package_version("alloyforge")
-            or "0.2.0+source"
+            or f"{__version__}+source"
         ),
         # Kept for reading and comparing projects produced before the public rename.
         "alloyforge_version": (
             package_version("alloy-model-forge")
             or package_version("alloyforge")
-            or "0.2.0+source"
+            or f"{__version__}+source"
         ),
         "python_version": platform.python_version(),
         "platform": platform.platform(),

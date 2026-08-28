@@ -4,6 +4,7 @@
 **High-throughput construction and validation of atomistic alloy models for downstream MD and DFT**
 
 [![Tests](https://img.shields.io/badge/tests-81%20passed-brightgreen)](#测试与科学验证)
+[![Version](https://img.shields.io/badge/version-1.0-blueviolet)](CHANGELOG.md)
 [![Python](https://img.shields.io/badge/Python-3.13-blue)](environment.yml)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 [![Interface](https://img.shields.io/badge/interface-Web%20%7C%20CLI-orange)](#两种使用方式)
@@ -106,11 +107,9 @@ AlloyModelForge 不是 ASE、OVITO、icet 或 sqsgenerator 的替代品，而是
 ### 2. 克隆项目
 
 ```powershell
-git clone https://github.com/YOUR-USERNAME/alloy-model-forge.git
-cd alloy-model-forge
+git clone https://github.com/caojian1134/AlloyModelForge.git
+cd AlloyModelForge
 ```
-
-将 `YOUR-USERNAME` 替换为实际 GitHub 用户名或组织名。
 
 ### 3. 创建完整科学环境
 
@@ -149,6 +148,7 @@ pytest -q
 
 > [!NOTE]
 > `environment.yml` 固定了经过测试的 Python、icet 和 OVITO 版本。只运行基础构建时可使用 `pip install -e ".[web,test]"`，但论文复现和跨电脑比较应使用 Conda 完整环境。
+> 无图形/Vulkan 后端的服务器或 CI 环境可使用 `pytest -q -m "not ovito_render"`；真实 OVITO Tachyon 渲染仍应在具备图形后端的完整环境中单独验收。
 
 ## 两种使用方式
 
@@ -368,7 +368,7 @@ conda run -n alloymodelforge-dev python scripts\journal_validation.py
 
 ### GitHub Actions
 
-仓库包含 [`.github/workflows/tests.yml`](.github/workflows/tests.yml)。每次 push 和 pull request 会在 Windows 与 Ubuntu 创建 Conda 环境并执行测试、科学验证和期刊验证，同时保存验证产物。首次上传后，请在 GitHub 仓库的 **Actions** 页面确认两个操作系统均通过。
+仓库包含 [`.github/workflows/tests.yml`](.github/workflows/tests.yml)。每次 push 和 pull request 会在 Windows 与 Ubuntu 创建 Conda 环境，执行无图形依赖的自动化测试、科学验证和期刊验证，并保存验证产物。真实 OVITO Tachyon 渲染测试需要兼容的 Vulkan/图形后端，因此不在 GitHub 托管运行器中执行，而保留在本地图形环境的完整验收链中。发布前应在 GitHub 仓库的 **Actions** 页面确认两个操作系统均通过。
 
 ## 在另一台电脑上复现
 
@@ -386,8 +386,8 @@ conda run -n alloymodelforge-dev python scripts\journal_validation.py
 完整验收命令：
 
 ```powershell
-git clone https://github.com/YOUR-USERNAME/alloy-model-forge.git
-cd alloy-model-forge
+git clone https://github.com/caojian1134/AlloyModelForge.git
+cd AlloyModelForge
 conda env create -f environment.yml
 conda activate alloymodelforge-dev
 python -m pip check
@@ -412,47 +412,42 @@ git ls-files | Select-String -Pattern "\.venv|validation-output|test-output|conv
 
 第二条命令正常情况下不应返回内容。
 
-### 2. 初始化并提交
+### 2. 提交版本更新
 
 ```powershell
-git init
-git branch -M main
-git add .
+git add <需要发布的文件>
 git status
-git commit -m "Initial public release of AlloyModelForge"
+git commit -m "Release AlloyModelForge 1.0"
+git push origin main
 ```
 
 提交前务必阅读 `git status`，确认没有环境、测试输出或隐私文件被加入。
 
-### 3. 创建 GitHub 仓库并推送
+### 3. 核对远程仓库
 
-在 GitHub 创建空仓库 `alloy-model-forge`，不要自动生成另一份 README 或许可证，然后运行：
-
-```powershell
-git remote add origin https://github.com/YOUR-USERNAME/alloy-model-forge.git
-git push -u origin main
-```
-
-也可以使用 GitHub CLI：
+项目远程仓库为 <https://github.com/caojian1134/AlloyModelForge>。推送前核对远程地址与当前分支：
 
 ```powershell
-gh repo create alloy-model-forge --public --source . --remote origin --push
+git remote -v
+git branch --show-current
+git status --short
 ```
 
-### 4. 首次公开版本检查
+仓库当前保持私有；只有在作者明确决定公开并完成许可证、作者信息、数据与安全检查后，才应修改可见性。
 
-- 将 `CITATION.cff` 的占位作者替换为真实作者；
-- 核对 `pyproject.toml` 和 `CITATION.cff` 版本一致；
-- 更新发布日期、项目 URL 和 DOI；
-- 在 README 补充实际 GitHub 地址和软件截图；
+### 4. 1.0 发布检查
+
+- 核对 `pyproject.toml`、Python API、Web API 和 `CITATION.cff` 的版本均为 `1.0`；
+- 核对发布日期、项目 URL、作者信息和 DOI（如有）；
 - 确认 MIT `LICENSE` 符合发布意图；
-- GitHub Actions 在 Windows 和 Ubuntu 均通过；
-- 创建标签与 GitHub Release；
+- 确认本地图形环境中的完整测试和真实 OVITO 渲染通过；
+- 确认 GitHub Actions 在 Windows 和 Ubuntu 均通过；
+- 创建 `v1.0` 标签与 GitHub Release；
 - 如需可引用 DOI，可连接 Zenodo 后创建正式 Release。
 
 ```powershell
-git tag -a v0.2.0 -m "AlloyModelForge v0.2.0"
-git push origin v0.2.0
+git tag -a v1.0 -m "AlloyModelForge 1.0"
+git push origin v1.0
 ```
 
 ## 常见问题

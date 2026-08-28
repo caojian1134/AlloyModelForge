@@ -1,18 +1,11 @@
 # Changelog
 
-## 0.2.0 - 2026-08-27
-
-- Renamed the public software brand from AlloyForge to AlloyModelForge to make
-  its role as an atomistic alloy model generator explicit.
-- Added the formal `alloy-model-forge` and `alloy-model-forge-web` commands,
-  while preserving the legacy short commands and Python import path.
-- Renamed the reproducible Conda environment to `alloymodelforge-dev` and the
-  default local Web data directory to `.alloymodelforge/jobs`.
-- Updated Web, documentation, citation metadata, validation reports and
-  publication terminology for the new public name.
-
 ## Unreleased
 
+## 1.0 - 2026-08-28
+
+- Declared the first stable AlloyModelForge release and unified the package,
+  Python API, Web API, provenance, citation metadata and documentation version.
 - Upgraded native SQS to finite-size fixed-composition pair targets, region
   feasibility diagnostics, internal/touching pair scopes, composition-directed
   swaps, adaptive acceptance-rate control and reproducible early stopping.
@@ -30,6 +23,17 @@
 - Added CNA/PTM interior-versus-interface statistics.
 - Added model resource limits, disk-space checks and safe completed-job deletion.
 - Added publication workflow, interpretation limits and reproducibility checklist.
+
+## 0.2.0 - 2026-08-27
+
+- Renamed the public software brand from AlloyForge to AlloyModelForge to make
+  its role as an atomistic alloy model generator explicit.
+- Added the formal `alloy-model-forge` and `alloy-model-forge-web` commands,
+  while preserving the legacy short commands and Python import path.
+- Renamed the reproducible Conda environment to `alloymodelforge-dev` and the
+  default local Web data directory to `.alloymodelforge/jobs`.
+- Updated Web, documentation, citation metadata, validation reports and
+  publication terminology for the new public name.
 
 ## 0.1.0 - 2026-08-25
 

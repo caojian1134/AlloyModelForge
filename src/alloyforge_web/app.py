@@ -17,7 +17,7 @@ from fastapi.responses import FileResponse, PlainTextResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field, ValidationError
 
-from alloyforge import ModelSpecification, estimate_model
+from alloyforge import ModelSpecification, __version__, estimate_model
 
 from .jobs import LocalJobManager
 from .render_jobs import render_manager
@@ -31,7 +31,7 @@ def _data_root() -> Path:
 
 
 manager = LocalJobManager(_data_root())
-app = FastAPI(title="AlloyModelForge Web", version="0.2.0")
+app = FastAPI(title="AlloyModelForge Web", version=__version__)
 static_dir = Path(str(files("alloyforge_web").joinpath("static")))
 project_root = Path(__file__).resolve().parents[2]
 PRESETS = {

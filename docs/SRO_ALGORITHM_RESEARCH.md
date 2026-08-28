@@ -6,7 +6,7 @@
 2. AlloyModelForge 当前代码实际实现了什么；
 3. icet、mcsqs、sqsgenerator 的方法差异，以及可以形成论文创新的方向。
 
-本文描述对应 AlloyModelForge `0.2.0` 当前源码。后续修改算法时，应同步更新本文、科学验证测试和 benchmark。
+本文描述对应 AlloyModelForge `1.0` 当前源码。后续修改算法时，应同步更新本文、科学验证测试和 benchmark。
 
 ## 1. 从随机合金到 SRO
 

@@ -2,6 +2,7 @@
 
 from .builder import BuildResult, build_model, estimate_model, load_project
 from .config import ModelSpecification, load_specification
+from ._version import __version__
 
 __all__ = [
     "BuildResult",
@@ -11,4 +12,3 @@ __all__ = [
     "load_specification",
     "load_project",
 ]
-__version__ = "0.2.0"

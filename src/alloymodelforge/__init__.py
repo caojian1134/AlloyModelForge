@@ -8,6 +8,7 @@ existing applications continue to work unchanged.
 from alloyforge import (
     BuildResult,
     ModelSpecification,
+    __version__,
     build_model,
     estimate_model,
     load_project,
@@ -22,5 +23,3 @@ __all__ = [
     "load_project",
     "load_specification",
 ]
-
-__version__ = "0.2.0"
