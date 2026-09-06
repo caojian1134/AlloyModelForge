@@ -7,16 +7,78 @@
   <title>AlloyModelForge · 合金模型工坊</title>
   <link rel="stylesheet" href="/styles.css?v=20260826-1">
   <link rel="stylesheet" href="/web-overrides.css?v=20260826-1">
+  <link rel="stylesheet" href="/showcase.css?v=20260906-1">
   <style>#viewer{position:relative}</style>
   <script src="/3Dmol-min.js?v=20260824-2"></script>
 </head>
 <body>
   <header class="topbar">
     <div class="brand"><span class="brandmark">AMF</span><div><strong>AlloyModelForge</strong><small>高通量合金原子模型构建平台</small></div></div>
-    <div class="topbar-actions"><div class="status"><span class="status-dot"></span>本地计算服务</div><button id="languageToggle" class="language-toggle" type="button" aria-label="Switch language">EN</button></div>
+    <nav class="top-navigation" aria-label="页面导航"><a href="#overview">项目概览</a><a href="#model-gallery">模型案例</a><a href="#builder">开始构建</a></nav>
+    <div class="topbar-actions"><div class="status"><span class="status-dot"></span>科学构建与验证</div><button id="languageToggle" class="language-toggle" type="button" aria-label="Switch language">EN</button></div>
   </header>
 
-  <main class="shell">
+  <section id="overview" class="showcase" aria-labelledby="showcaseTitle">
+    <div class="showcase-hero">
+      <div class="showcase-copy">
+        <span class="eyebrow">VALIDATED ATOMISTIC WORKFLOW</span>
+        <h1 id="showcaseTitle">把合金微结构设想<br>转化为可验证的原子模型</h1>
+        <p class="showcase-lead">面向分子动力学、第一性原理与高通量研究，在同一工作流中定义晶粒、相区和化学占位，并输出可审计的结构与验证报告。</p>
+        <div class="showcase-actions"><a class="showcase-primary" href="#builder">进入模型工坊</a><a class="showcase-secondary" href="#model-gallery">查看真实模型</a></div>
+        <div class="evidence-line"><span>8 类结构模板</span><span>4 种 SQS 路径</span><span>4 种主流输出格式</span><span>中英文 Web + CLI + API</span></div>
+      </div>
+      <figure class="workbench-preview">
+        <img src="/showcase-workbench.png" alt="AlloyModelForge 中文五步模型构建界面" width="1265" height="835" fetchpriority="high">
+        <figcaption><span>01</span><div><strong>五步可视化构建</strong><small>从模板、尺寸与成分，到验证、预览和下载</small></div></figcaption>
+      </figure>
+    </div>
+
+    <div class="validation-ribbon" aria-label="项目验证能力">
+      <article><b>01</b><strong>统一模型定义</strong><span>YAML、Web、CLI 与 Python API 使用同一规范</span></article>
+      <article><b>02</b><strong>真实结构构建</strong><span>单晶、多晶、双相、析出相与核壳区域</span></article>
+      <article><b>03</b><strong>科学验收指标</strong><span>组成、最短距离、界面、SRO、CNA 与 PTM</span></article>
+      <article><b>04</b><strong>下游直接衔接</strong><span>导出 EXTXYZ、LAMMPS data、POSCAR 与 CIF</span></article>
+    </div>
+
+    <div id="model-gallery" class="gallery-heading">
+      <div><span class="eyebrow">MODEL EVIDENCE</span><h2>真实构建结果，而不是概念示意图</h2></div>
+      <p>以下图像均由 AlloyModelForge 的本地验证流程生成，并与可下载模型、配置和数值报告对应。</p>
+    </div>
+
+    <div class="model-gallery">
+      <a class="gallery-card gallery-card-wide" href="/showcase-polycrystal-elements.png" target="_blank" rel="noopener">
+        <img src="/showcase-polycrystal-elements.png" alt="CoCrFeMnNi 多晶模型元素分布" width="1232" height="1098" loading="lazy">
+        <span class="gallery-tag">POLYCRYSTAL</span><h3>五元高熵合金多晶</h3><p>按元素着色检查组成分布，同时保留晶粒、晶界和结构标签。</p>
+      </a>
+      <a class="gallery-card" href="/showcase-dual-phase.png" target="_blank" rel="noopener">
+        <img src="/showcase-dual-phase.png" alt="FCC BCC 双相多晶模型" width="1244" height="1098" loading="lazy">
+        <span class="gallery-tag">DUAL PHASE</span><h3>FCC / BCC 双相多晶</h3><p>按晶粒分配相结构和独立组成，显式保留相界信息。</p>
+      </a>
+      <a class="gallery-card" href="/showcase-core-shell.png" target="_blank" rel="noopener">
+        <img src="/showcase-core-shell.png" alt="FCC 基体 BCC 壳层 HCP 核心模型" width="1331" height="1098" loading="lazy">
+        <span class="gallery-tag">CORE–SHELL</span><h3>多相核壳区域</h3><p>FCC 基体、BCC 壳层和 HCP 核心形成可追踪的嵌套结构。</p>
+      </a>
+      <a class="gallery-card" href="/showcase-region-sqs.png" target="_blank" rel="noopener">
+        <img src="/showcase-region-sqs.png" alt="区域约束 SQS 相界模型" width="1375" height="1076" loading="lazy">
+        <span class="gallery-tag">REGION SQS</span><h3>区域约束与界面识别</h3><p>把相界、晶界或选定区域纳入独立的化学占位约束。</p>
+      </a>
+      <a class="gallery-card gallery-card-chart" href="/showcase-sro-benchmark.png" target="_blank" rel="noopener">
+        <img src="/showcase-sro-benchmark.png" alt="不同 SQS 方法的残余短程有序基准" width="1152" height="792" loading="lazy">
+        <span class="gallery-tag">VALIDATION</span><h3>SQS 结果可量化</h3><p>使用邻居壳层上的 Warren–Cowley 指标比较不同构建路径。</p>
+      </a>
+    </div>
+
+    <div class="workflow-story">
+      <div class="workflow-copy"><span class="eyebrow">FROM SPEC TO SIMULATION</span><h2>每一步都有输入、产物和检查</h2><p>模型生成不是终点。工作流同步记录随机种子、配置、结构指纹与验证指标，便于跨电脑复现并进入 LAMMPS 或 DFT 前处理。</p></div>
+      <ol class="workflow-steps"><li><b>01</b><span><strong>定义</strong><small>晶胞、尺寸、晶粒、相与元素组成</small></span></li><li><b>02</b><span><strong>构建</strong><small>Voronoi 多晶、空间相区与精确组成</small></span></li><li><b>03</b><span><strong>验证</strong><small>几何、组成、界面、SRO、CNA/PTM</small></span></li><li><b>04</b><span><strong>交付</strong><small>结构文件、元数据与可追溯报告</small></span></li></ol>
+    </div>
+
+    <div class="scientific-boundary"><span>科学边界</span><p>网页生成的是用于后续计算的初始原子构型。包含界面、缺陷或复杂相区的模型通常仍需使用适用的势函数或 DFT 进行弛豫；结构构建通过不等同于材料已达到热力学平衡。</p></div>
+  </section>
+
+  <div class="builder-intro"><span class="eyebrow">BUILD WORKSPACE</span><h2>现在开始构建你的模型</h2><p>选择模板，或从五步向导建立新的合金原子结构。</p></div>
+
+  <main id="builder" class="shell">
     <aside class="sidebar">
       <div class="intro"><span class="eyebrow">BUILD WORKSPACE</span><h1>从微结构设想到<br>可计算原子模型</h1><p>设置晶粒、相与化学组成，系统会在本机生成可用于 LAMMPS 的模型。</p></div>
       <nav id="steps" class="steps">
@@ -105,6 +167,6 @@
       <small class="element-help">点击元素即可加入当前相；也可以在搜索框直接输入合法元素符号。</small>
     </div>
   </div>
-  <script src="/app.js?v=20260826-1"></script>
+  <script src="/app.js?v=20260906-1"></script>
 </body>
 </html>
