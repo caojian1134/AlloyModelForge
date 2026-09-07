@@ -19,8 +19,9 @@ to prevent unrelated packages from `%APPDATA%\\Python` entering validation runs.
 ## Verified capabilities
 
 The Conda environment includes ASE, NumPy, SciPy, FastAPI, icet,
-sqsgenerator, and the official OVITO distribution. `pip check` passes and all
-81 tests pass in the current release, including the environment-contract test,
+sqsgenerator, and the official OVITO distribution. The existing full-environment
+reference run passed `pip check` and 81 tests. Re-run the checks for the current
+commit rather than treating that count as a live status. Coverage includes the environment-contract test,
 the real icet backend, Web
 workflow coverage, scientific invariants, and OVITO CNA/PTM tests.
 
