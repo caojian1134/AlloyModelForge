@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Stop the Windows bootstrap immediately when Conda setup or validation fails,
+  propagating a non-zero result instead of continuing through later checks.
+- Exercise each bootstrap failure stage and the successful create/update paths
+  in PowerShell regression tests without modifying a Conda environment.
+
 ## 1.0 - 2026-08-28
 
 - Declared the first stable AlloyModelForge release and unified the package,

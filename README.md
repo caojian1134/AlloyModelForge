@@ -3,7 +3,7 @@
 **面向 MD、DFT 与高通量工作流的合金原子计算模型构建与验证平台**  
 **High-throughput construction and validation of atomistic alloy models for downstream MD and DFT**
 
-[![Tests](https://img.shields.io/badge/tests-81%20passed-brightgreen)](#测试与科学验证)
+[![Tests](https://github.com/caojian1134/AlloyModelForge/actions/workflows/tests.yml/badge.svg)](https://github.com/caojian1134/AlloyModelForge/actions/workflows/tests.yml)
 [![Version](https://img.shields.io/badge/version-1.0-blueviolet)](CHANGELOG.md)
 [![Python](https://img.shields.io/badge/Python-3.13-blue)](environment.yml)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
@@ -329,7 +329,7 @@ output:
 conda run -n alloymodelforge-dev pytest -q
 ```
 
-当前版本在完整 Conda 环境中为 **81 passed**。第三方库可能产生 deprecation warning；只要测试返回码为 0，就不等同于模型验证失败。
+既有完整 Conda 环境参考记录为 **81 passed**；当前提交的测试数量和结果应以实际运行输出为准。第三方库可能产生 deprecation warning；只要测试返回码为 0，就不等同于模型验证失败。
 
 ### 固定结构复现检查
 
